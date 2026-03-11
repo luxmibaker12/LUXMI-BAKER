@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUXMI BAKER | Order Cakes Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',sans-serif;background:#f4f8ff;color:#333}
+header{background:#0a3aa6;color:#fff;padding:20px 40px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:600}
+nav a{color:#fff;margin-left:20px;text-decoration:none}
+.hero{height:60vh;background:linear-gradient(rgba(10,58,166,.6),rgba(10,58,166,.6)),url('https://images.unsplash.com/photo-1603532648955-039310d9ed75');background-size:cover;background-position:center;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px}
+.hero h1{font-size:46px;margin:0}
+.btn{margin-top:20px;padding:12px 22px;border:none;background:#1e63ff;color:white;font-size:16px;border-radius:6px;cursor:pointer}
+.section{padding:60px 20px;text-align:center}
+.section h2{margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;max-width:1000px;margin:auto}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,.08)}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-content{padding:15px}
+.order-form{max-width:520px;margin:auto;text-align:left;background:#fff;padding:25px;border-radius:10px;box-shadow:0 6px 15px rgba(0,0,0,.08)}
+.order-form input,.order-form select,.order-form textarea{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc}
+.dashboard{max-width:900px;margin:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+.contact{background:#e9f0ff;padding:50px 20px}
+footer{background:#0a3aa6;color:#fff;text-align:center;padding:20px;font-size:14px}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">LUXMI BAKER</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#cakes">Cakes</a>
+<a href="#order">Order</a>
+<a href="#dashboard">Orders</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section class="hero" id="home">
+<h1>Order Fresh Cakes Online</h1>
+<p>Pineapple, Chocolate and Custom Cakes made fresh for your celebration.</p>
+<a href="#order"><button class="btn">Order Now</button></a>
+</section>
+
+<section class="section" id="cakes">
+<h2>Popular Cakes</h2>
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729">
+<div class="card-content">
+<h3>Pineapple Cake</h3>
+<p>Soft sponge with pineapple cream.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587">
+<div class="card-content">
+<h3>Chocolate Cake</h3>
+<p>Rich chocolate layered cake.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e">
+<div class="card-content">
+<h3>Custom Cake</h3>
+<p>Design your own celebration cake.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="section" id="order">
+<h2>Place Your Order</h2>
+<form class="order-form" id="orderForm">
+<label>Name</label>
+<input type="text" id="name" required>
+
+<label>Phone Number</label>
+<input type="tel" id="phone" required>
+
+<label>Select Cake</label>
+<select id="cake">
+<option>Pineapple Cake</option>
+<option>Chocolate Cake</option>
+<option>Custom Cake</option>
+</select>
+
+<label>Cake Weight</label>
+<select id="weight">
+<option>500 g</option>
+<option>1 kg</option>
+<option>2 kg</option>
+</select>
+
+<label>Delivery Date</label>
+<input type="date" id="date" required>
+
+<label>Special Instructions</label>
+<textarea id="note" rows="3"></textarea>
+
+<h3>UPI Payment</h3>
+<p>Pay using UPI to confirm your order.</p>
+<p><strong>UPI ID:</strong> luxmibaker@upi</p>
+
+<button class="btn" type="submit">Place Order</button>
+</form>
+</section>
+
+<section class="section" id="dashboard">
+<h2>Order Dashboard</h2>
+<div class="dashboard">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Cake</th>
+<th>Weight</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody id="ordersTable"></tbody>
+</table>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<h2>Visit Our Bakery</h2>
+<p><strong>Address:</strong> Peer Baba Main Road, Baltana, Zirakpur</p>
+</section>
+
+<footer>
+© 2026 LUXMI BAKER • Online Cake Ordering
+</footer>
+
+<script>
+const form=document.getElementById('orderForm');
+const table=document.getElementById('ordersTable');
+
+function loadOrders(){
+const orders=JSON.parse(localStorage.getItem('luxmiOrders')||'[]');
+table.innerHTML='';
+orders.forEach(o=>{
+const row=`<tr><td>${o.name}</td><td>${o.phone}</td><td>${o.cake}</td><td>${o.weight}</td><td>${o.date}</td></tr>`;
+table.innerHTML+=row;
+});
+}
+
+form.addEventListener('submit',function(e){
+e.preventDefault();
+const order={
+name:document.getElementById('name').value,
+phone:document.getElementById('phone').value,
+cake:document.getElementById('cake').value,
+weight:document.getElementById('weight').value,
+date:document.getElementById('date').value
+};
+
+const orders=JSON.parse(localStorage.getItem('luxmiOrders')||'[]');
+orders.push(order);
+localStorage.setItem('luxmiOrders',JSON.stringify(orders));
+
+alert('Order received! Please complete UPI payment.');
+form.reset();
+loadOrders();
+});
+
+loadOrders();
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Luxmi Bakers</title>
+
+<style>
+body{
+margin:0;
+font-family: Arial;
+}
+
+header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#fff5f7;
+padding:10px 40px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo img{
+width:50px;
+height:50px;
+}
+
+.logo h1{
+font-size:24px;
+color:#8b1c3d;
+margin:0;
+}
+
+nav a{
+text-decoration:none;
+margin:0 15px;
+color:#333;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#e03a6a;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="logo.png" alt="Luxmi Bakers Logo">
+<h1>LUXMI BAKERS</h1>
+</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#">Menu</a>
+<a href="#">Cakes</a>
+<a href="#">Contact</a>
+</nav>
+
+</header>
+
+</body>
+</html>
